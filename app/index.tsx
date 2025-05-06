@@ -1,4 +1,7 @@
+import React from "react";
 import { Text, View } from "react-native";
+
+// const API_URL = ;
 
 export default function Index() {
   return (
