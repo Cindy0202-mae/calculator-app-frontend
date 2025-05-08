@@ -1,21 +1,9 @@
-import React from "react";
-import {
-  Text,
-  View
-} from "react-native";
+// import type { Href } from "expo-router/build/link/href";
+import { Redirect } from "expo-router";
+
 
 // const API_URL = ;
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Hello!</Text>
-    </View>
-  );
+  return <Redirect href="/tabs/calculator" />;
 }
