@@ -8,6 +8,7 @@ export default function RootLayout() {
         options={{
           headerShown: false // Hide the header for all screens in the tabs layout
         }}/>
+      <Stack.Screen name="index" options={{ headerShown: false }}/>
     </Stack>
   );
 }

@@ -6,5 +6,5 @@ export const calculate = async (data: {
   operand2?: string;
 }) => api.post('/calculate', data);
 
-export const getHistory = () => api.get('/history');
-export const deleteHistory = (id: number) => api.delete(`/history/${id}`);
+export const getHistory = () => api.get('/calculator/history');
+export const deleteHistory = (id: number) => api.delete(`/calculator/history/${id}`);
