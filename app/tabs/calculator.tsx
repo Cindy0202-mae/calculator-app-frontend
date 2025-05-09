@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { calculate } from '../../lib/api/endpoints';
 
 export default function CalculatorScreen() {
@@ -38,40 +38,97 @@ export default function CalculatorScreen() {
         keyboardType="numeric"
       />
 
-      <View style={styles.buttons}>
+<View style={styles.operations}>
         {['+', '-', '*', '/'].map((op) => (
-          <Button
+          <TouchableOpacity
             key={op}
-            title={op}
+            style={[
+              styles.operationButton,
+              operation === op && styles.selectedOperation,
+            ]}
             onPress={() => setOperation(op)}
-          />
+          >
+            <Text style={styles.operationText}>{op}</Text>
+          </TouchableOpacity>
         ))}
       </View>
 
-      <Button title="Calculate" onPress={handleCalculate} />
+      <TouchableOpacity style={styles.calculateButton} onPress={handleCalculate}>
+        <Text style={styles.calculateText}>Calculate</Text>
+      </TouchableOpacity>
 
-      {result && <Text style={styles.result}>Result: {result}</Text>}
+      {result !== '' && <Text style={styles.result}>Result: {result}</Text>}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    alignSelf: 'flex-start',
+    marginBottom: 5,
+  },
   input: {
+    width: '100%',
     height: 50,
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
     marginBottom: 15,
-    padding: 10
+    backgroundColor: '#fff',
   },
-  buttons: {
+  operations: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical: 20
+    width: '100%',
+    marginVertical: 20,
+  },
+  operationButton: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 30,
+    backgroundColor: '#e0e0e0',
+  },
+  selectedOperation: {
+    backgroundColor: '#4caf50',
+  },
+  operationText: {
+    fontSize: 24,
+    color: '#fff',
+  },
+  calculateButton: {
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#2196f3',
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  calculateText: {
+    fontSize: 18,
+    color: '#fff',
+    fontWeight: 'bold',
   },
   result: {
-    marginTop: 20,
+    marginTop: 30,
     fontSize: 24,
-    textAlign: 'center'
-  }
+    fontWeight: 'bold',
+    color: '#333',
+  },
 });
