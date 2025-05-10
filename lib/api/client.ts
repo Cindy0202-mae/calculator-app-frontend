@@ -2,9 +2,9 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 
 const BASE_URL = Platform.select({
-  android: 'http://10.0.2.2:3001/api',
-  ios: 'http://localhost:3001/api',
-  default: 'http://192.168.28.199:3001/api', // Fallback for other platforms
+  android: 'http://10.0.2.2:3001/api/calculator',
+  ios: 'http://localhost:3001/api/calculator',
+  default: 'http://192.168.0.13:3001/api/calculator' // Fallback for other platforms
 });
 
 const api = axios.create({
