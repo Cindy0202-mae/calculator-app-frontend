@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
 
+const LOCAL_IP = '192.168.0.13';
+
 const BASE_URL = Platform.select({
   web: 'http://localhost:3001/api/calculator',
   android: 'http://10.0.2.2:3001/api/calculator',
-  ios: 'http://192.168.0.13:3001:3001/api/calculator',
-  default: 'http://192.168.0.13:3001/api/calculator'
+  ios: `http://${LOCAL_IP}:3001/api/calculator`,
+  default: `http://${LOCAL_IP}:3001/api/calculator`
 });
 
 const api = axios.create({

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { calculate } from '../../lib/api/endpoints';
 
 export default function CalculatorScreen() {
@@ -53,11 +53,12 @@ export default function CalculatorScreen() {
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
+        style={[styles.input, Platform.OS === 'android' && styles.inputAndroid]}
         placeholder="First number"
         value={num1}
         onChangeText={setNum1}
         keyboardType="numeric"
+        clearButtonMode='while-editing' //iOS only
       />
       <TextInput
         style={styles.input}
@@ -125,6 +126,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 15,
     backgroundColor: '#fff',
+  },
+  inputAndroid: {
+    paddingVertical: 10,
+    textAlign: 'center'
   },
   operations: {
     flexDirection: 'row',
