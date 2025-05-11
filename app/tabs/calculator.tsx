@@ -10,14 +10,43 @@ export default function CalculatorScreen() {
 
   const handleCalculate = async () => {
     try {
+      // Convert string inputs to numbers
+      const operand1 = parseFloat(num1);
+      const operand2 = parseFloat(num2);
+
+      // Validate inputs
+      if (isNaN(operand1)){
+        setResult('Invalid first number');
+        return;
+      }
+      if (isNaN(operand2)){
+        setResult('Invalid second number');
+        return;
+      }
       const { data } = await calculate({
         operation,
-        operand1: num1,
-        operand2: num2
+        operand1: (num1),
+        operand2: (num2)
       });
-      setResult(data.result);
-    } catch (error) {
-      console.error('Calculation failed:', error);
+
+      // Handle response
+      if (data.error === 'Division by zero') {
+        setResult('Cannot divide by zero');
+      } else if (data.result === undefined) {
+        setResult('Invalid operation');
+      } else if (data.result) {
+        setResult(data.result);
+      } else {
+        setResult('Calculation failed');
+      }
+
+    } catch (error: any) {
+      console.error('API Error:', error.response?.data || error.message);
+      setResult(
+        error.response?.data?.error === 'Division by zero'
+          ? 'Cannot divide by zero'
+          : 'Calculation failed'
+      );
     }
   };
 
@@ -57,7 +86,14 @@ export default function CalculatorScreen() {
         <Text style={styles.calculateText}>Calculate</Text>
       </TouchableOpacity>
 
-      {result !== '' && <Text style={styles.result}>Result: {result}</Text>}
+      {result !== '' && (
+        <Text style={[
+          styles.result,
+          result === 'Invalid' || result === 'Error' ? styles.errorText : null
+        ]}>
+          {result === 'Invalid' ? 'Division by zero is invalid' : `Result: ${result}`}
+        </Text>
+      )}
     </View>
   );
 }
@@ -130,5 +166,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 18,
   },
 });

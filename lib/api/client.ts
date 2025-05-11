@@ -21,12 +21,19 @@ api.interceptors.request.use(config => {
 });
 
 api.interceptors.response.use(
-  response => {
-    console.log('Response:', response.data); // Debugging
-    return response;
-  },
+  response => response,
   error => {
-    console.error('API Error:', error.response ? error.response.data : error.message); // Debugging
+    if (error.response) {
+      // Server responded with error status
+      console.error('API Error:', {
+        status: error.response.status,
+        data: error.response.data,
+        url: error.config.url
+      });
+    } else {
+      // Network error or server unreachable
+      console.error('Network Error:', error.message);
+    }
     return Promise.reject(error);
   }
 );
