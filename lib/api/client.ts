@@ -20,5 +20,24 @@ api.interceptors.request.use(config => {
   return config;
 });
 
+api.interceptors.response.use(
+  response => {
+    console.log('Response:', response.data); // Debugging
+    return response;
+  },
+  error => {
+    console.error('API Error:', error.response ? error.response.data : error.message); // Debugging
+    return Promise.reject(error);
+  }
+);
+
+// Explicitly declare result type for calculation
+export const calculate = async (operation: string, operand1: number, operand2: number) => {
+  return api.post('/calculate', {
+    operation,
+    operand1,
+    operand2
+  });
+};
 
 export default api;
