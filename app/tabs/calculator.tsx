@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
 import { calculate } from '../../lib/api/endpoints';
 
 export default function CalculatorScreen() {
@@ -51,66 +62,83 @@ export default function CalculatorScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={[styles.input, Platform.OS === 'android' && styles.inputAndroid]}
-        placeholder="First number"
-        value={num1}
-        onChangeText={setNum1}
-        keyboardType="numeric"
-        clearButtonMode='while-editing' //iOS only
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Second number"
-        value={num2}
-        onChangeText={setNum2}
-        keyboardType="numeric"
-      />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
 
-<View style={styles.operations}>
-        {['+', '-', '*', '/'].map((op) => (
-          <TouchableOpacity
-            key={op}
-            style={[
-              styles.operationButton,
-              operation === op && styles.selectedOperation,
-            ]}
-            onPress={() => setOperation(op)}
-          >
-            <Text style={styles.operationText}>{op}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+          <View style={styles.innerContainer}>
+            <TextInput
+              style={[styles.input, Platform.OS === 'android' && styles.inputAndroid]}
+              placeholder="First number"
+              value={num1}
+              onChangeText={setNum1}
+              keyboardType="numeric"
+              clearButtonMode='while-editing' //iOS only
+              />
+            <TextInput
+              style={styles.input}
+              placeholder="Second number"
+              value={num2}
+              onChangeText={setNum2}
+              keyboardType="numeric"
+              />
 
-      <TouchableOpacity style={styles.calculateButton} onPress={handleCalculate}>
-        <Text style={styles.calculateText}>Calculate</Text>
-      </TouchableOpacity>
+            <View style={styles.operations}>
+              {['+', '-', '*', '/'].map((op) => (
+                <TouchableOpacity
+                key={op}
+                style={[
+                  styles.operationButton,
+                  operation === op && styles.selectedOperation,
+                ]}
+                onPress={() => setOperation(op)}
+                >
+                  <Text style={styles.operationText}>{op}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
 
-      {result !== '' && (
-        <Text style={[
-          styles.result,
-          result === 'Invalid' || result === 'Error' ? styles.errorText : null
-        ]}>
-          {result === 'Invalid' ? 'Division by zero is invalid' : `Result: ${result}`}
-        </Text>
-      )}
-    </View>
+            <TouchableOpacity style={styles.calculateButton} onPress={handleCalculate}>
+              <Text style={styles.calculateText}>Calculate</Text>
+            </TouchableOpacity>
+
+            {result !== '' && (
+              <Text style={[
+                styles.result,
+                result === 'Invalid' || result === 'Error' ? styles.errorText : null
+              ]}>
+                {result === 'Invalid' ? 'Division by zero is invalid' : `Result: ${result}`}
+              </Text>
+            )}
+          </View>
+        </ScrollView>
+        </TouchableWithoutFeedback>
+  </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+
+  innerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#f5f5f5',
+    width: '100%',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 30,
+    color: '#333',
   },
   label: {
     fontSize: 16,
