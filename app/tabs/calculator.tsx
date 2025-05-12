@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View
 } from 'react-native';
 import { calculate } from '../../lib/api/endpoints';
@@ -65,7 +64,15 @@ export default function CalculatorScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View
+        style={{ flex: 1 }}
+        onStartShouldSetResponder={() => {
+          Keyboard.dismiss(); // Dismiss the keyboard when tapping outside
+          return false; // Ensure the tap is not intercepted
+        }}>
+
+        {/* <Pressable onPress={Keyboard.dismiss} style={{ flex: 1 }}> */}
+        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
         <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
 
           <View style={styles.innerContainer}>
@@ -114,7 +121,9 @@ export default function CalculatorScreen() {
             )}
           </View>
         </ScrollView>
-        </TouchableWithoutFeedback>
+      </View>
+        {/* </Pressable> */}
+        {/* </TouchableWithoutFeedback> */}
   </KeyboardAvoidingView>
   );
 }
