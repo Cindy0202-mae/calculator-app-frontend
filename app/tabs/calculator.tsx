@@ -49,7 +49,7 @@ export default function CalculatorScreen() {
       } else {
         setResult('Calculation failed');
       }
-// error handling and response validation
+// error handling and response validation// error handling
     } catch (error: any) {
       console.error('API Error:', error.response?.data || error.message);
       setResult(
